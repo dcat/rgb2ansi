@@ -257,7 +257,7 @@ uint32_t set[] = {
 
 void
 usage(char *name) {
-	fprintf(stderr, "usage: %s <-n | -f | -b> <hex triplet>\n", name);
+	fprintf(stderr, "usage: %s -<n|f|b> <#rrggbb>\n", name);
 	exit(0);
 }
 
@@ -273,7 +273,7 @@ rgb2lab(float r1, float g1, float b1, float *l2, float *a2, float *b2)
 	g1 /= 255.0;
 	b1 /= 255.0;
 
-	if (r1 > 0.04045) 
+	if (r1 > 0.04045)
 		r1 = powf((r1 + 0.055) / 1.055, 2.4);
 	else
 		r1 /= 12.92;
@@ -283,9 +283,9 @@ rgb2lab(float r1, float g1, float b1, float *l2, float *a2, float *b2)
 	else
 		g1 /= 12.92;
 
-	if (b1 > 0.04045) 
+	if (b1 > 0.04045)
 		b1 = powf((b1 + 0.055) / 1.055, 2.4);
-	else 
+	else
 		b1 /= 12.92;
 
 	r1 *= 100.0;
@@ -300,7 +300,7 @@ rgb2lab(float r1, float g1, float b1, float *l2, float *a2, float *b2)
 	y /= 100.000;
 	z /= 108.883;
 
-	if (x > 0.008856) 
+	if (x > 0.008856)
 		x = powf(x, 0.3333);
 	else
 		x = (7.787 * x) + 0.1379;
@@ -381,15 +381,19 @@ closest(const uint32_t trp) {
 int
 main(int argc, char **argv) {
 	char gnd = '3';
+	char *colp, *ptr;
 	int color;
 
 	if (argc != 3)
 		usage(argv[0]);
 
-	if ((strlen(argv[2]) != 6)) 
-		usage(argv[0]);
+	colp = argv[2];
+	if (*colp == '#')
+		*colp++;
 
-	color = strtoul(argv[2], NULL, 16);
+	color = strtoul(colp, &ptr, 16);
+	if (ptr == colp)
+		usage(argv[0]);
 
 	if (argv[1][0] == '-')
 		switch (argv[1][1]) {

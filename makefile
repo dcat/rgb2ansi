@@ -1,3 +1,4 @@
-CFLAGS = -g
+LDFLAGS = -lm
+CFLAGS  = -g
 
-trip2term: trip2term.c
+rgb2ansi: rgb2ansi.c
